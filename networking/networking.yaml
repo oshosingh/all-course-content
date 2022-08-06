@@ -1,0 +1,23 @@
+- What is OSI Model:
+  - 7 Layers each describe a specific networking component
+  - Layer 7 -> Application - HTTP / FTP / gRPC / Microsoft office
+               -> Post request with JSON data to HTTPS server (Sender)
+
+  - Layer 6 -> Presentation - Encoding, Serialization ( json from layer 7 to string )
+               -> Serialize JSON to flat byte strings (Sender)
+
+  - Layer 5 -> Session - Connection establishment, TLS
+               -> Request to establish TCP connection / TLS (Sender)
+
+  - Layer 4 -> Transport - UDP / TCP (segments)
+               -> Sends SYN request target port 443 (Sender)
+
+  - Layer 3 -> Network - IP (packets)
+               -> SYN is placed an IP packet(s) and adds the source/dest IPs (Sender)
+
+  - Layer 2 -> Data link - Frames, Mac address Ethernet
+               -> Each packet goes into a single frame and adds the source/dest MAC addresses (Sender)
+
+  - Layer 1 -> Physical - Electric signals, fiber, radio waves
+               -> Each frame becomes string of bits which converted into either a raido signal(wifi), electric signal (Sender)
+    
