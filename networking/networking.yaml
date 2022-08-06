@@ -21,3 +21,8 @@
   - Layer 1 -> Physical - Electric signals, fiber, radio waves
                -> Each frame becomes string of bits which converted into either a raido signal(wifi), electric signal (Sender)
     
+- The shortcoming of the OSI model:
+  - OSI model has too many layers which can be hard to comprehend
+  - Hard to argue about which layer does What
+  - Simple to deal with layers 5-6-7 as just one layer, Application
+  - TCP/IP model does just that
