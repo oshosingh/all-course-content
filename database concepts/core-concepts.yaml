@@ -39,7 +39,11 @@
   - Consistency:
     - Consistency in Data 
     - Consistency in reads (system as a whole, if you have multiple shards, partition, clusters) data is not in sync.
+    - If atomicity and isolation is not followed correctly, your db will get into inconsistent state 
+    - Types -> Strongly and eventually consistent 
     
+
+
     
 
 
