@@ -1,0 +1,41 @@
+- What is a transaction:
+  - A collection of queries that does one unit of work.
+  - E.g., Deposit Money (Select, Update sender balance, update receiver balance)
+
+  - transaction Lifespan:
+    - Begin -> A transaction begins with keyword Begin that indicates that you are about to 
+               start a transaction with multiple queries.
+    - Commit -> This keyword tells the transaction to commit and persist to disk. 
+                (Postgres commits are fastest because they commit every query and it does a lot of I/o)
+    - Rollback -> If any query fails rollback the transaction and don't persist anything on disk. 
+    - Transaction unexpected enging = Rollback (e.g., crash) :
+      - If you db crashes, make sure once it comes back rollback of transactions must happen.
+  
+  - Nature of transaction:
+    - Usually Transactions are used to chnage and modify data
+    - However, it is perfectly normal to have a read onlu transaction
+    - Example, you want to generate a report and you want to get consistent snapshot based at the time of transaction
+
+- Acid Properties:
+
+  - Atomicity:
+    - All queries in a transaction must succeed.
+    - If one query fails, all prior successful queries in the transaction should rollback.
+    - If the database went down prior to a commit of a transaction, all the successful queries in the transaction should rollback. 
+    - Lack of Atomicity leads to inconsitency.
+  
+  - Isolation:
+    - Multiple transaction should happen without interference
+
+    - Isolation levels for inflight transactions: 
+      - Read uncommited -> No isolation, any change from the outside is visible to the transaction, commited or not.
+      - Read commited -> Each query in a transaction only sees commited changes by other transactions. 
+      - Repeatable Read -> The transaction will make sure that when a query reads a row, that row will remain unchanged the transaction 
+                           while its running.
+      - Snapshot -> Each query in a transaction only sees changes that have been commited up to the start of the transaction. 
+      - Serializable -> Transactions are run as if they are serialized one after the other. (No concurrency, slowest)
+      - Each DBMS implements isolation level differently.
+    
+    
+
+    
