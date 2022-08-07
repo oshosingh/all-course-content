@@ -8,6 +8,7 @@
     - Commit -> This keyword tells the transaction to commit and persist to disk. 
                 (Postgres commits are fastest because they commit every query and it does a lot of I/o)
     - Rollback -> If any query fails rollback the transaction and don't persist anything on disk. 
+
     - Transaction unexpected enging = Rollback (e.g., crash) :
       - If you db crashes, make sure once it comes back rollback of transactions must happen.
   
@@ -41,7 +42,23 @@
     - Consistency in reads (system as a whole, if you have multiple shards, partition, clusters) data is not in sync.
     - If atomicity and isolation is not followed correctly, your db will get into inconsistent state 
     - Types -> Strongly and eventually consistent 
+  
+  - Durablility:
+    - Changes made by committed transactions must be persistent in a durbale non-volatiole storage.
+
+    - Durability technqiues:
+      - WAL -> write ahead log 
+      - Aynchronous snapshot
+      - Append only file (AOF)
     
+    - Durability - OS Cache:
+      - A write request in OS Usually goes to the OS Cache
+      - When the writes go the OS cache, an OS crash, machine restart could lead to loss of data 
+      - Fsync OS command forces writes to always go to disk (is generally slow)
+      
+
+
+
 
 
     
