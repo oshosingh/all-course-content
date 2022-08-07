@@ -35,7 +35,12 @@
       - Snapshot -> Each query in a transaction only sees changes that have been commited up to the start of the transaction. 
       - Serializable -> Transactions are run as if they are serialized one after the other. (No concurrency, slowest)
       - Each DBMS implements isolation level differently.
+  
+  - Consistency:
+    - Consistency in Data 
+    - Consistency in reads (system as a whole, if you have multiple shards, partition, clusters) data is not in sync.
     
     
+
 
     
