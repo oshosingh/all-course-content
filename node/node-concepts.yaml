@@ -1,0 +1,7 @@
+- what is nodejs:
+  - nodejs is a javascript runtime built on Google chrome's v8 engine. Since it is a runtime it provide v8 with the javascript and c++
+    binding as input and the engine returns the response.
+
+- why use nodejs: 
+  - Nodejs uses an event driven non-block I/O model that makes it lightweight and efficient.
+  - Nodejs package system, npm, is the largest ecosystem of open source libraries in the world.
