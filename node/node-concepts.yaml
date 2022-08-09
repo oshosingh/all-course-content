@@ -5,3 +5,4 @@
 - why use nodejs: 
   - Nodejs uses an event driven non-block I/O model that makes it lightweight and efficient.
   - Nodejs package system, npm, is the largest ecosystem of open source libraries in the world.
+  - npm init, initializes the repository and create a configuration file to manage the dependencies from npm website.
