@@ -57,6 +57,40 @@
       - Fsync OS command forces writes to always go to disk (is generally slow)
       
 
+- How Tables and Indexes are stored in a disk:
+  - Row_id:
+    - Internal and system maintained 
+    - In certain databases it is the same as primary key but other databases like postgres have a system column row_id (tuple_id)
+  
+  - Page:   
+    - Depending on the storage model (row vs column store), the rows are stored and read in logical pages 
+    - The database doesn't read a single row, it reads a page or more in a single IO and we get a lot of rows in that IO
+    - Each page has a size (e.g., 8KB in postgres)
+    - Assume each page holds 3 rows then for 1001 rows you will have 333 pages 
+  
+  - IO:
+    - IO operation (input / output) is a read request to the disk
+    - We try to minimize this as much as possible 
+    - An IO can fetch 1 page or more depending on the disk partitions and other factors 
+    - An IO cannot read a single row, its a page with many rows in them 
+    - You want to minimize the number of IOs as they are expensive 
+    - Some IOs in operating systems goes to the os cache and not disk 
+  
+  - Heap: 
+    - The heap is data structure where the table is stored with all it pages one after another.
+    - This is where the actual data is stored including everything 
+    - Traversing the heap is expensive as we need to read so many data to find what we want 
+    - That is why we need indexes that help tell us exactly what part of the heap we need to read. what pages of the heap we need to pull 
+  
+  - Index: 
+    - An index is another data structure separate from the heap that has pointers to the heap 
+    - It has part of the data and used to quickly search for something 
+    - You can index on one column on more 
+    - Once you find a value of the index, you go to the heap to fetch more information where everything is there 
+    - Index tells you exactly which page to fetch in the heap 
+    - Index is also store as pages and cost IO to pull the entries of the index 
+    - The smaller the index, the more it can fit in memory the faster the search 
+    - Popular data structure for index is b-trees 
 
 
 
