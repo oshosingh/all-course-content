@@ -91,6 +91,37 @@
     - Index is also store as pages and cost IO to pull the entries of the index 
     - The smaller the index, the more it can fit in memory the faster the search 
     - Popular data structure for index is b-trees 
+  
+  - Row vs Column Based Database: 
+    
+    - Row-Oriented Database:
+      - Tables are stored as rows in disk 
+      - A single block io read to the table fetches multiple rows with all their columns 
+      - More IOs are required to find a particular row in a table scan but once you find the row you get all columns for that row 
+
+      - Pros and cons: 
+        - Optimal for read/writes 
+        - OLTP 
+        - Compression isn't efficient 
+        - Aggregation isn't efficient 
+        - Efficient queries w/multi-columns 
+
+    - Column-Oriented Database:
+      - Tables are stores as columns first in disk 
+      - A single block io read to the table fetches multiple columns with all matching rows 
+      - Less IOs are required to get more values of a given column. But working with multiple columns require more IOs. 
+
+      - Pros and cons: 
+        - Writes are slower 
+        - OLAP 
+        - Compress greatly ( salary=1000 -> john, andy )
+        - Amazing for Aggregation 
+        - Inefficient queries w/multi-columns
+      
+    
+      
+    
+
 
 
 
