@@ -1,0 +1,132 @@
+Before going any further I would really appreciate if you could give my previous post a quick read just to get the gist of this series and if you are one of those busy, on a time crunch people, well let’s move on and hope for the best !
+
+For those who would like to look at code directly, skip to the end and for others let’s get started.
+
+In the Intro part of the series I already mentioned the projects that I would be undertaking to learn more about sockets, for part1 I’ll be creating a synchronized range slider, nothing too tech-heavy, just a simple app to get the ground running. Let’s get started.
+
+Planning
+I don’t know about you, but I hate planning. Instinctively, I just want to dive in and start writing code. Having done this plenty of times, this tactic usually results in plenty of rewriting and refactoring because of poor planning, or lack thereof. So, let’s figure out how this application should look, both front-end and server-side.
+
+To start, we know the application will be built in two distinct parts: Vanilla JavaScript front-end, and the Flask back-end. In addition, we’ll be using Socket.IO to allow our front-end to talk to our back-end.
+
+Server-side Architecture
+When planning out the server, I decided to stick with the typical Flask approach of rendering templates using Jinja2. With Flask-SocketIO , I knew it was fairly easy to get something up and running.
+
+Client-side Architecture
+In order to reduce the complexity of the app and to focus more on actual coding portion I decided to stick with Vanilla JavaScript and not to add nitigrities of complex frameworks.
+
+The final component to our front-end, which ties everything together, is Socket.IO, which allows our front-end (Client) to communicate with our back-end (Server).
+
+Bringing it all together
+To make sense of all that will go into building this app here’s a basic diagram depicting how it all connects together.
+
+
+Client-Server Architecture
+How awesome would it be if I can say I made this during planning phase of the app but if I did that would be a LIE. The truth is it’s difficult to actually know what you want to add to an app up until you actually code it. However, this is basically what I pictured in my head when planning the app , more or less !
+
+Getting Flask working with Websockets.
+Lets get to actual coding and see how to deal with sockets using flask.
+
+Directory structure
+
+Create a main folder lets call it slider-sync (Because why the heck not !!).
+Inside main folder create app.py and a folder templates.
+Inside templates create index.html file.
+The directory structure would now look like this:-
+slider-sync
+— app.py
+— templates
+— — index.html
+
+In our app, few sections that will be using sockets are the connection request handler and the value changed event handler. Instead of creating standard Flask routes, we’ll need to create some websocket event handlers. Before doing so, our Flask app needs to be wrapped by SocketIO. Instead of starting the app with app.run(), we’ll instead use our SocketIO instance and call socketio.run().
+
+
+Notice the difference between our index() decorator and test_connect() decorator, this is because we are leveraging the SocketIO decorator to create a websocket event handler instead of a standard Flask route. This works in a similar fashion to the standard Flask routes, except instead of speaking with GETs and POSTs, we’re speaking using channels over a websocket connection. When the client sends a message on the connectchannel, our test_connect handler will process it.
+
+The final step is on line 28, where we call socketio.run() instead of app.run(). Again, this is due to us wrapping our app with the SocketIO object.
+
+We’ll need to add a couple of things to this code, but first let’s code up our front-end portion.
+
+Getting JavaScript working with Websockets.
+Add the following code to your index.html inside templates folder.
+
+
+index.html
+Open index.html using any standard browser and have a look at the UI, it will look something like this :-
+
+
+Slider-sync
+I know it’s not the prettiest UI in the world ( It’s nowhere close ), it gets the work done so zip it :D
+
+As you can see in the index.html code above ( line 16 and line 20), slider 1 and slider 2 are given class sync and id slider1 and slider2 respectively. Also notice the weird code in you html on line 16 and 20, where value of the slider is set to {slider1} and {slider2} , this is the jinja2 syntax to use values that have been passed from the server.
+
+Next we’ll need to write the socket code to :-
+
+Create socket connection.
+On change in value of the slider, send a message to server over some channel.
+Receive broadcast message from server when some other client changes slider value.
+Lets go step-by-step.
+
+Step 1: Create socket connection.
+
+Inside your index.html add the following javascript code.
+
+$(document).ready(function(){
+ // sending a connect request to the server.
+ var socket = io.connect('http://localhost:5000');
+});
+Step 2: Add event handler for slider value change.
+
+To the above code add the following lines (below the definition of socket variable)
+
+// An event handler for a change of value 
+$('input.sync').on('input', function(event) {
+    socket.emit('Slider value changed', {
+        who:$(this).attr('id'),  
+        data: $(this).val()
+     });
+     return false;
+ });
+In the above code certain things to note are :-
+
+Event handler is defined on class sync thus will work for both slider1 and slider2.
+The event handler is called on input event and not on change event, this is done to ensure that movement of slider on all clients is smooth and value doesn’t change abruptly ( When entire project is done, try changing this to change and see what happens ).
+The line having socket.emit() emits a custom event named slider value changed which can then be received on server side ( As we’ll do in a moment), the second argument to emit function is the data object which in our case is an object having properties who and data depicting which slider value was changed and what the changed value is.
+Step 3: Receive a broadcast message from server.
+
+socket.on('after connect', function(msg){
+   console.log('After connect', msg);
+});
+socket.on('update value', function(msg) {
+     console.log('Slider value updated');
+     $('#'+msg.who).val(msg.data);
+});
+Add the above code below you present code. As it is obvious by just reading the code, that on receiving an event over channel after connect and update value the respective callback function is executed.
+
+$('#'+msg.who).val(msg.data) is responsible for updating the value of the slider whose value was changed by some other client, and the value is set to msg.data
+
+with all the steps done, our code should look some like this :-
+
+
+Making final changes to our flask code.
+Now we need to add a socket handler to deal with message over slider value changed channel and broadcast the change to all clients.
+
+Add the following lines to your flask code.
+
+@socketio.on('Slider value changed')
+def value_changed(message):
+    values[message['who']] = message['data']
+    emit('update value', message, broadcast=True)
+On receiving the message, the server side values are updated to keep a record of the values of the slider on server-side.
+emit is used to send message value over update value channel. A third parameter is used broadcast=True which makes sure that all the connected clients in the current namespace ( More on this in later part of series), this message is then dealt with our javascript code.
+So finally, our app.py code should look something like this:-
+
+
+To run and test your app :-
+
+open terminal in the parent directory and run command python app.py then navigate to localhost:5000 in your browser.
+To simulate multiple clients open multiple tabs and move the slider in each of them to see the slider sync in all the other clients.
+Try reloading the clients to see the purpose of the values dictionary that we used in our app.py.
+Full code can be found here.
+
+Stay tuned for next part of the series.
