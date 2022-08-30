@@ -92,6 +92,17 @@
     - The smaller the index, the more it can fit in memory the faster the search 
     - Popular data structure for index is b-trees 
 
+    - Clustered Index: 
+      - Clustered indexes sort and store the data rows in the table or view based on their key values. These are the columns included in the index definition.
+        There can be only one clustered index per table, because the data rows themselves can be stored in only one order.  
+      - The only time the data rows in a table are stored in sorted order is when the table contains a clustered index. When a table has a clustered index, the table is called a clustered table.
+        If a table has no clustered index, its data rows are stored in an unordered structure called a heap.
+      
+    - Non-clustered Index: 
+      - Nonclustered indexes have a structure separate from the data rows. A nonclustered index contains the nonclustered index key values and each key value entry has a pointer to the data row that contains the key value.
+      - The pointer from an index row in a nonclustered index to a data row is called a row locator. The structure of the row locator depends on whether the data pages are stored in a heap or a clustered table. For a heap, a row locator is a pointer to the row. 
+        For a clustered table, the row locator is the clustered index key.
+
     - Syntax: create index index_name on table_name(column_list separated by comma)
               create index index_name on table_name(column_list) include (column_list)
             
