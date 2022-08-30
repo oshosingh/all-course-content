@@ -1,7 +1,11 @@
+- How to analyze a query:
+  - explain analyze query 
+  - explain (analyze, buffers) query -> buffers will give us the info if query hits the cache 
+
 - What is a transaction:
   - A collection of queries that does one unit of work.
   - E.g., Deposit Money (Select, Update sender balance, update receiver balance)
-
+  
   - transaction Lifespan:
     - Begin -> A transaction begins with keyword Begin that indicates that you are about to 
                start a transaction with multiple queries.
