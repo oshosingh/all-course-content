@@ -1,0 +1,24 @@
+- What is elasticsearch:
+  - It is an open source analytics and open search engine
+  - Data is stored as documents
+  - Documents data is separated into fields
+  - Query is send to elasticsearch using Rest APIs
+  - Easy to use and highly scalable (Distributed in nature)
+
+- Elastic Stack:
+  - Technologies that are related to elasticsearch
+  - Kibana:
+    - analytics and visualization platform (setup machine learning), webui for elasticsearch
+  - Logstash:
+    - used for process logs and send to elasticsearch
+    - data processing pipeline (data produced are handled as events)
+    - consits of 3 parts -> input, filter, output
+    - horizontally scalable
+  - X-pack:
+    - adds more features
+    - adds security to elasticsearch and Kibana (authentication and authorization)
+    - monitoring
+    - alerting
+    - reporting (export to kibana dashboard, pdf etc)
+    - graph 
+

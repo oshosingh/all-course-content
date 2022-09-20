@@ -2,3 +2,4 @@ node/project/node_modules
 python/socket/node_modules
 node_modules
 python/socket/__pycache__
+.gitpod.yml
