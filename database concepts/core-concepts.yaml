@@ -171,7 +171,30 @@
     - Updates that move rows from a partition to another (slow or fail sometimes)
     - Inefficient queries could accidently scan all partitions resulting in slower performance
     - Schema changes can be challenging (DBMS could manage it though)
-      
+  
+  - Sharding: 
+    - Sharding splits big table into multiple tables across multiple database servers
+
+    - Pros of Sharding:
+      - Scalability
+      - Data
+      - Memory
+      - Security (users can access certain shards)
+      - Optimal and Smaller index size
+    
+    - Cons of Sharding:
+      - Complex client (aware of the shard)
+      - Transactions across shards problem
+      - Rollbacks
+      - Schema changes are hard
+      - Joins Has to be something you know in the query
+    
+    - Commands:
+      - Source Code https://github.com/hnasr/javascript_playground/tree/master/sharding
+
+      - Docker commands (including pgadmin) https://github.com/hnasr/javascript_playground/blob/master/sharding/shards/commands.txt
+
+      - Dockerfile & init.sql https://github.com/hnasr/javascript_playground/tree/master/sharding/shards
     
       
     
