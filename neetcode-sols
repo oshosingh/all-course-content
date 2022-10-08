@@ -1,0 +1,6 @@
+# Neetcode All
+
+Contains Duplicate - Set
+Valid Anagram - Map, anagrams have same character frequency
+Replace Elements With Greatest Element On Right Side - Keep track of prev max variable, starting from end
+Is Subsequence - Two pointer approach, take i for s and j for t, for loop on s and inner while loop on t and write conditions
