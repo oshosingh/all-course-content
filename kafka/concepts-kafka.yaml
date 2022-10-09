@@ -142,6 +142,17 @@
   - Zookeeper by desing operates with an odd number of servers (1,3,5,7)
   - zookeeper has a leader(writes) the rest of the servers are followers (reads)
   - zookeeper doesn't store consumer offsets with kafka > v0.10
+
+- Kafka KRaft:
+  - Apache kafka project started to work to remove the zookeeper dependency from it (KIP-500)
+  - Zookeeper shows scaling issues when kafka cluster have > 100,00 paritions 
+  - By removing zookeeper, Apache kafka can:
+    - Scale to millions of partitions, and becomes easier to maintain and set-up 
+    - Improve stablility, makes it easier to monitor, support and administer
+    - Single security model for the whole system 
+    - Single process to start with kafka 
+    - Faster controller shutdown and recovery time 
+    - Note: Not production ready 
   
 
 
