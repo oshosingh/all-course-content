@@ -1,0 +1,26 @@
+- kafka-topics.sh:
+  - Create kafka topic:
+    - kafka-topics --bootstrap-server localhost:9092 --topic first_topic --create 
+      --partitons 3 --replication-factor 2
+
+  - List kafka topic:
+    - kafka-topics --bootstrap-server localhost:9092 --list
+
+  - Describe Kafka topic: 
+    - kafka-topics --bootstrap-server localhost:9092 --topic first_topic --describe
+
+  - Delete a kafka topic: 
+    - kafka-topics --bootstrap-server localhost:9092 --topic first_topic --delete
+
+- Kafka-console-producer.sh:
+
+  - Produce without keys:
+    - kafka-console-producer --bootstrap-server localhost:9092 --topic first_topic (send message from console)
+      --producer-property acks=all 
+
+  - Produce with keys:  
+    - kafka-console-producer --bootstrap-server localhost:9092 --topic first_topic 
+      --property parse.key=true --property key.separator=,
+      e.g., data -> user_id, hello world
+      
+
