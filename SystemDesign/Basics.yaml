@@ -46,6 +46,11 @@
         - The replicas/slaves will serve the read transactions or request and the master will do the writes.
         - If Master goes down then one of the slave is promoted as Master and it will start accepting write requests and a new slave
           is spawned to take place of the previous slave.
+
+        - Types of replication:
+          - Single Master Replication
+          - Multiple Master Replication
+          - NDB cluster Replication
       
         - Disadvantage:
           - The master and slaves will be having all the data rows so storage is one problem and also our queries will get slow
