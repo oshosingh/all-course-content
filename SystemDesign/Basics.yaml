@@ -1,0 +1,95 @@
+- Scale System to handle millions of users:
+  - Dns Server: A domain for the application.
+  - Load Balancer: Load balancing refers to efficiently distributing
+                   incoming network traffic across a group of backend servers, also known as a server farm or server pool.
+
+  - Application components:
+    - Frontend
+    - Backend
+    - Database
+    - Caching
+    - Message Queues
+    - Logging, Monitoring and Automation
+  
+  - Scaling Frontend Application:
+    - Frontend components consists of : Image, Video, Css, JS, Static contents
+    - CDN (Content Delivery Network):
+      - CDNs are edge location servers that has capabilities of caching static contents.
+      - If a user wants to access the website and CDN cache is empty then request reaches the FE server.
+        Then the files will be sent to the client over HTTP or HTTPS and also CDN will cache it.
+      - If CDN cache is not empty, then the files will be sent to client by CDNs and the request will not
+        reach the server.
+      - CDNs helps in serving static contents with low latency because the request will not go to the datacenter
+        instead it will be served by the CDN nearest to the location of user.
+    - Load Balancer:
+      - One server is not sufficient to handle millions of request, so spin up multiple instances of FE application
+        and place a load balancer in front of the application which will take care of load balancing incoming request among
+        the servers.
+      - Load balancer communicates with the application using private ip, so the client will not know which server was serving
+        the request.
+      - A single load balancer is a single point of failure, so start multiple instances of load balancer and add the ip of the 
+        load balancer in the A record of DNS and then DNS will send requests to the load balancers in Round Robin order.
+
+  - Scaling Backend Application:
+    - Similar to Frontend application, backend applications can also be scaled using load balancer and by running multiple
+      instances of the application.
+  
+  - Databases:
+      - Having one DB to handle all the incoming request is not ideal for situations where the application is being used by 
+        millions of users.
+
+      - DB replication helps in solving this problem:
+        - Run multiple instances of the Database and make one instance master which will handle Read/Write operation and make other
+          instances a replica of the Master. The replicas will have all the data that is their in Master and Master will push update
+          in Sync or Async manner to the replicas.
+        - This Master-Slave model is designed to decrease load on a single server.
+        - The replicas/slaves will serve the read transactions or request and the master will do the writes.
+        - If Master goes down then one of the slave is promoted as Master and it will start accepting write requests and a new slave
+          is spawned to take place of the previous slave.
+      
+        - Disadvantage:
+          - The master and slaves will be having all the data rows so storage is one problem and also our queries will get slow
+            over time.
+        
+      - Database Scaling (Vertical & Horizontal Scaling):
+        - Vertical scaling is adding more compute to the DB server but there is a limit.
+        - Horizontal scaling is diving the DB into multiple servers with same schema and running them on also known as Sharding
+          different servers / datacenters / geolocations. 
+        - If DB is sharded then backend applications use consistent hashing to identify the shard and then they run the transactions.
+        - Sharding with replication makes less prone to failure.
+
+        - Disadvantage:
+          - Joins are almost impossible.
+          - Sharding strategy should be good else one shard might have millions of records and resharding requirement may arise.
+      
+  - In-Memory Cache:
+    - Caches are used to descrease the db hits if a record is accessed very frequently.
+    - Cache holds the most frequent db data and if there is a cache hit then the response is sent immediately
+      because cache resides in main memory and it is fast.
+    - In case of Cache miss, backend will fetch the results from db and then it writes it to cache and sends it to the client
+      known as Write-through cache.
+    - Cache sharding is also possible to scale Cache dbs.
+      
+  - Message Queues:
+    - If we have a requirement where things are executed in async mode because the process might take a while or in
+      producer/consumer scenarios, message queues are used. In message queues, a producer application produces message and sends it
+      to the queue and there are brokers/consumers which consumes the message present in queue and perform action defined by
+      the messages.
+    - We can have N number of brokers and N number of producers so queues are by default distributed and scaling them is easy.
+  
+  - Logging, Monitoring and Automation:
+    - Logging: 
+      - Monitoring error logs is important as it gives us insights about our application.
+      - It tells about the problem in our system.
+    
+    - Monitoring:
+      - Collection different metrics helps us gain insights and understand the health status of the system.
+    
+    - Automation:
+      - When system gets big and complex then automating helps to increase productivity.
+      - Continuous integration is necessary as it automatically detects failures or problems before the code goes to production.
+
+
+
+
+   
