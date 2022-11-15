@@ -74,6 +74,8 @@
     - In case of Cache miss, backend will fetch the results from db and then it writes it to cache and sends it to the client
       known as Write-through cache.
     - Cache sharding is also possible to scale Cache dbs.
+
+    - READ: https://codeahoy.com/2017/08/11/caching-strategies-and-how-to-choose-the-right-one/
       
   - Message Queues:
     - If we have a requirement where things are executed in async mode because the process might take a while or in
