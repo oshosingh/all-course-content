@@ -1,0 +1,3 @@
+- What is ratelimiter:
+  -  rate limiter is a defensive mechanism used in a distributed system to prevent the frequency of an operation from 
+     exceeding a defined limit and causing server errors.
